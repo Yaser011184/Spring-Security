@@ -1,7 +1,6 @@
 package com.Spring.Security.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
@@ -41,6 +40,5 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return name;
-
     }
 }

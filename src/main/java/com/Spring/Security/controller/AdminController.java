@@ -1,41 +1,44 @@
 package com.Spring.Security.controller;
 
-import com.Spring.Security.service.UserServiceImpl;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.Spring.Security.model.User;
+import org.springframework.web.bind.annotation.*;
+import com.Spring.Security.service.UserService;
+import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
 public class AdminController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    public AdminController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/admin")
-    public String userList(Model model) {
-        model.addAttribute("allUsers", userServiceImpl.getUsers());
-        return "admin";
+    public List<User> userList() {
+       List<User> allUsers = userService.getUsers();
+        return allUsers;
     }
 
+    @GetMapping("/admin/{id}")
+    public Optional<User> getUser(@PathVariable Integer id) {
+        Optional<User> user = userService.findUserById(id);
+        return user;
+    }
     @PostMapping("/admin")
-    public String  deleteUser(@RequestParam(required = true, defaultValue = "" )  Integer id,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userServiceImpl.deleteUserById(id);
-        }
-        return "redirect:/admin";
+    public User addUser (@RequestBody User user) {
+        return userService.save(user);
     }
 
-    @GetMapping("/admin/gt/{userId}")
-    public String  getUser(@PathVariable("userId") Integer id, Model model) {
-        model.addAttribute("allUsers", userServiceImpl.findUserById(id));
-        return "admin";
+    @PutMapping("/admin")
+    public User updateUser (@RequestBody User user) {
+        return userService.update(user);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public String deleteUser(@PathVariable Integer id) {
+        userService.deleteUserById(id);
+        return "User with ID = " + id + " was deleted";
     }
 }

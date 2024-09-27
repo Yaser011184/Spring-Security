@@ -7,7 +7,6 @@ import com.Spring.Security.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override
@@ -48,8 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User update(User user, Integer id) {
-        userRepository.findById(id);
+    public User update(User user) {
         if (user != null) {
             userRepository.save(user);
         }

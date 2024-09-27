@@ -1,6 +1,5 @@
 package com.Spring.Security.repository;
 
-
 import com.Spring.Security.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
